@@ -1,10 +1,10 @@
 conky.config = {
 own_window = true,
-own_window_transparent = true,
+own_window_transparent = false,
 own_window_type = 'normal',
 own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
 own_window_argb_visual = true,
-own_window_argb_value = 0,
+own_window_argb_value = 192,
 out_to_console = false,
 use_xft = true,
 font = 'cure:size=10',
@@ -41,7 +41,8 @@ ${color}${alignc}${color lightgrey}Uptime: ${color}$uptime${color lightgrey} | $
 ${color lightgrey}${alignc}Battery:$color ${battery}${color lightgrey} | ${color lightgrey}ET: ${color}$battery_time
 ${alignc}${color #66FFFF}${battery_bar 10,300}
 ${color #656565}$stippled_hr$color
-${alignc}${color}$wireless_essid${alignr}${color lightgrey}
+
+${alignc}${color}${wireless_essid wlp2s0}${alignr}${color lightgrey}
 
 ${color lightgrey}    Down:${color}${downspeedf wlp2s0} KB/s${alignr}${color lightgrey}Up:${color}${upspeedf wlp2s0} KB/s  
 ${color #000000}${downspeedgraph wlp2s0 15,140 000000 66FFFF}${alignr}${color #000000}${upspeedgraph wlp2s0 15,140 000000 66FFFF}
@@ -49,6 +50,7 @@ ${color lightgrey}       Total: $color${totaldown wlp2s0}${alignr}${color lightg
 
 ${color lightgrey}Wireless Bitrate: ${color}${wireless_bitrate wlp2s0}${color lightgrey} | ${color lightgrey}${alignr}Signal Quality:${color}${wireless_link_qual_perc wlp2s0}%
 ${color #656565}$stippled_hr$color
+
 ${alignc}${color}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq}
 ${alignc}${color #000000}${cpugraph 15,318 000000 66FFFF}
 
@@ -59,8 +61,10 @@ ${color #66FFFF}${cpubar cpu1 6,150}${alignr}${color #66FFFF}${cpubar cpu2 6,150
 ${color lightgrey} C3: ${color}${cpu cpu3}% ${color lightgrey}@ ${color}${freq 3} MHz${color #66FFFF}${alignr}${color lightgrey}C4: ${color}${cpu cpu4}% ${color lightgrey}@ ${color}${freq 4} MHz
 ${color #66FFFF}${cpubar cpu3 6,150}${alignr}${color #66FFFF}${cpubar cpu4 6,150}
 
-${color white}${exec sensors | grep 'RPM'}${color lightgrey}   |  ${color lightgrey}GPU Temp: ${color}${color}${execi 10 inxi -sc0 | awk '{print $NF}'| head -n 1}°C
+${color white}${exec sensors | grep 'Processor Fan'}${color lightgrey}   |  ${alignr}${color lightgrey}ACPI Temp: ${color white}${acpitemp}°C
+
 ${color #656565}$stippled_hr$color
+
 ${color lightgrey}Ram ${alignc}                 ${color}$mem${color lightgrey} / ${color}$memmax ${alignr}${memperc}% Used
 ${color #66FFFF}${membar 6,318}
 ${color lightgrey}Swap ${alignc}               ${color}${swap}${color lightgrey} / ${color}${swapmax} ${alignr}${swapperc}% Used
@@ -70,6 +74,7 @@ ${color #66FFFF}${fs_bar 6,318 /}
 ${color lightgrey}Disk Read IO: $color${diskio_read}${alignr}${color lightgrey}Disk Write IO: ${color}${diskio_write}
 ${color #000000}${diskiograph_read 15,145 000000 66FFFF}${alignr}${color #000000}${diskiograph_write 15,145 000000 66FFFF}
 ${color #656565}$stippled_hr$color
+
 ${color lightgrey}Processes: ${color}$running_processes${color lightgrey} / ${color}$processes${alignr}${color lightgrey}Threads: ${color}$running_threads${color lightgrey} / ${color}$threads
 
 ${color lightgrey}  PID            Process${alignr}Memory   CPU   
@@ -84,8 +89,5 @@ ${color}${top pid 8}          ${top name 8}${alignr}${top mem_res 8} ${top cpu 8
 ${color}${top pid 9}          ${top name 9}${alignr}${top mem_res 9} ${top cpu 9}%
 ${color}${top pid 10}          ${top name 10}${alignr}${top mem_res 10} ${top cpu 10}%
 ${color #656565}$stippled_hr$color
-${alignc}${color}Weather
 
-${execi 300 inxi -wxxxc0 | awk '{print $8}'| head -n 1}: ${execi 300 inxi -wxxc0 | awk '{print $5,$6}'| head -n 1}${alignr}${color lightgrey} |   Pressure: ${color}${execi 300 inxi -wxxc0 | awk '{print $2,$3,$4,$5}' | tail -n 1}   
-
-${color lightgrey}Humidity: ${color}${execi 300 inxi -wxxc0 | awk '{print $NF}'| head -n 1}${alignr}${color lightgrey}|   Wind: ${color}${execi 300 inxi -wxc0 | awk '{print $10,$11,$12,$13,$14,$15}'| head -n 1}]]
+]]
